@@ -1,0 +1,8 @@
+override_settings
+User
+TestCase
+B_DashboardTest
+A_DashboardTest
+widgets
+reverse
+ImproperlyConfigured

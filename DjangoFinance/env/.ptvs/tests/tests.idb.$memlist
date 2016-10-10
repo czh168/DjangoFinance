@@ -1,0 +1,9 @@
+test_dashboards
+test_templatetags
+DjangoTestCase
+test_base
+test_widgets_core
+test_widgets_charts
+TestCase
+test_app_settings
+test_utils

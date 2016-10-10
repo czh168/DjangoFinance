@@ -1,0 +1,13 @@
+itertools
+User
+QuerySet
+GroupTest
+widgets
+WidgetMetaTest
+WidgetMeta
+six
+ItemListTest
+TestCase
+BaseWidget
+BaseWidgetTest
+ImproperlyConfigured
