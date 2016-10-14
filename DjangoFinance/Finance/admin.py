@@ -3,34 +3,34 @@ from Finance.models import *
 # Register your models here.
 #base**************************************************************************
 class Agency_Admin(admin.ModelAdmin):
-    list_display=('name','comment')
+    list_display=('Name','Comment')
 admin.site.register(Agency,Agency_Admin)
 
 class Account_Admin(admin.ModelAdmin):
-    list_display=('name','comment')
+    list_display=('Name','Comment')
 admin.site.register(Account,Account_Admin)
 
 class InvestType_Admin(admin.ModelAdmin):
-    list_display=('name','subname','risk','liquidity','comment')
+    list_display=('Name','SubName','Risk','Liquidity','Comment')
 admin.site.register(InvestType,InvestType_Admin)
 
 class IntrestType_Admin(admin.ModelAdmin):
-    list_display=('name','comment')
+    list_display=('Name','Comment')
 admin.site.register(IntrestType,IntrestType_Admin)
 
-class StockFundInfo_Admin(admin.ModelAdmin):
-    list_display=('name','code','price','type')
+class Equity_Admin(admin.ModelAdmin):
+    list_display=('Name','Code','Price','Type')
     actions=['setprice',]
     
     def setprice(self,request,queryset):
         for sf in queryset:
-            sf.setprice()
+            sf.SetPrice()
     setprice.short_description="从互联网更新价格"
-admin.site.register(StockFundInfo,StockFundInfo_Admin)
+admin.site.register(Equity,Equity_Admin)
 
 #main****************************************************************************
 class FixedIcome_Admin(admin.ModelAdmin):
-    list_display=('name','agency','account','spend','investtype','buydate','maturity','intrestype','annualizedyield','discount','comment','completed')
+    list_display=('Name','Agency','Account','Spend','Investtype','Buydate','Maturity','IntresType','AnnualizedYield','Discount','Comment','Completed')
     actions = ['make_completed','genCashFlowA']
 
     def make_completed(self, request, queryset):
@@ -45,7 +45,10 @@ class FixedIcome_Admin(admin.ModelAdmin):
     genCashFlowA.short_description="生成现金流"
 admin.site.register(FixedIncome,FixedIcome_Admin)
 
-
 class FixedIncomeCashFlow_Admin(admin.ModelAdmin):
-    list_display=('happenddate','amount','relatefixedincome')
+    list_display=('HappendDate','Amount','RelateFixedIncome')
 admin.site.register(FixedIncomeCashFlow,FixedIncomeCashFlow_Admin)
+
+class EquityReg_Admin(admin.ModelAdmin):
+    list_display=('Agency','Account','InvestType','Equity','Amount','Price','Quantity','TradeDate','Comment')
+admin.site.register(EquityReg,EquityReg_Admin)

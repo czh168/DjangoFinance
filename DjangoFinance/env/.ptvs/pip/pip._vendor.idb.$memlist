@@ -6,9 +6,9 @@ pkg_resources
 os
 ipaddress
 six
-distlib
+sys
 pyparsing
-absolute_import
+distlib
 vendored
 progress
 glob
@@ -17,5 +17,5 @@ DEBUNDLED
 cachecontrol
 lockfile
 packaging
-sys
+absolute_import
 WHEEL_DIR
