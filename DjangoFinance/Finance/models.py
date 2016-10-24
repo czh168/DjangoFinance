@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 from django.db import models
+from django.db.models.fields import *
 from django.core.urlresolvers import reverse
+from django.apps import apps
 import datetime
 import urllib.request
+import csv
 # Create your models here.
 
 #*******************************************************************************************************************
@@ -14,6 +17,7 @@ class Agency(models.Model):
     Comment= models.CharField('说明', max_length=100,blank=True, null=True)
     def __str__(self):
         return self.Name
+
     class Meta:
         verbose_name = '机构'
         verbose_name_plural = '机构'
@@ -178,7 +182,58 @@ class Equity(models.Model):
         verbose_name = '权益类信息'
         verbose_name_plural = '权益类信息'
         ordering = ['Type','Code']  # 按照哪个栏目排序
-#
+#**********************************************************************************************************************
+#数据导入
+class BatchImport(models.Model):
+    ModelName= models.CharField('模型名称', max_length=50,blank=True, null=True)
+    UploadFile= models.FileField('上传文件',upload_to='./upload/%Y-%m-%d/')
+    UploadTime=models.DateTimeField('上传时间',auto_now=True, null=True,blank=True)
+ 
+    def save(self, *args, **kwargs):        
+        super(BatchImport, self).save(*args, **kwargs)
+        self.ImportData('Finance',self.ModelName,self.UploadFile.path)
+#字符串布尔值
+    def StrBoolValue(self, value):       
+        if value in ("0", "false", "False","F","f"):            
+            return False        
+        elif value in ("1", "true", "True","T","t"):           
+           return True       
+        else:
+            return False            
+#类型转换
+    def TypeChange(self,field,str):
+        ftype=type(field)
+        if ftype in (models.DateField,):
+            return datetime.datetime.strptime(str, "%Y-%m-%d").date()
+        elif ftype in ( models.DateTimeField,):
+            return datetime.datetime.strptime(str, "%Y-%m-%d %H:%M:%S")
+        elif ftype in (models.BooleanField,models.NullBooleanField):
+            return  self.StrBoolValue(str)
+        else:
+            return str
+#导入数据
+    def ImportData(self,appname,modelname,path):
+        csvs=csv.DictReader(open(path, 'r'))
+#获取model
+        m = apps.get_app_config(appname).get_model(modelname)
+#获取字段verbose_name
+        fverbose_names=[f.verbose_name for f in m._meta.get_fields() if not f.auto_created]
+#获取字段
+        fields=[f for f in m._meta.get_fields() if not f.auto_created]
+#生成verbose_name与field的字典
+        v_f=dict(zip( fverbose_names, fields))
+#导入数据
+        for r in csvs:
+            e=m()
+            for fname in r:
+                setattr(e,v_f[fname].name,r[fname])
+            e.save()       
+    def __str__(self):
+        return self.ModelName
+    class Meta:
+        verbose_name = '数据导入'
+        verbose_name_plural = '数据导入'
+        ordering = ['UploadTime']  # 按照哪个栏目排序
 #******************************************************************************************************************
 #*************                                      main                                           ****************
 #******************************************************************************************************************
@@ -217,7 +272,7 @@ class FixedIncomeCashFlow(CashFlow):
         verbose_name = '固定收益类现金流'
         verbose_name_plural = '固定收益类现金流'
         ordering = ['HappendDate']  # 按照哪个栏目排序
-
+        
 #*******************************************************************************************************************
 #权益类登记
 class EquityReg(models.Model):

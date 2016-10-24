@@ -28,6 +28,9 @@ class Equity_Admin(admin.ModelAdmin):
     setprice.short_description="从互联网更新价格"
 admin.site.register(Equity,Equity_Admin)
 
+class BatchImport_Admin(admin.ModelAdmin):
+    list_display=('ModelName','UploadFile','UploadTime')
+admin.site.register(BatchImport,BatchImport_Admin)
 #main****************************************************************************
 class FixedIcome_Admin(admin.ModelAdmin):
     list_display=('Name','Agency','Account','Spend','Investtype','Buydate','Maturity','IntresType','AnnualizedYield','Discount','Comment','Completed')
@@ -52,3 +55,5 @@ admin.site.register(FixedIncomeCashFlow,FixedIncomeCashFlow_Admin)
 class EquityReg_Admin(admin.ModelAdmin):
     list_display=('Agency','Account','InvestType','Equity','Amount','Price','Quantity','TradeDate','Comment')
 admin.site.register(EquityReg,EquityReg_Admin)
+
+

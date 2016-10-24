@@ -4576,3 +4576,145 @@ D:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\Extensions\Micro
 2016-10-14T15:48:21: Saving group "C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\pip"
 2016-10-14T15:48:25: End of group "C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\pip"
 2016-10-14T15:48:27: Deleting 0 files
+
+2016-10-23T21:15:32: Start analysis
+2016-10-23T21:15:32: [WARNING] Library was set explicitly - skipping path detection
+2016-10-23T21:15:32: IncludeModulesFromModulePath = win32com
+2016-10-23T21:15:39: Deleting 13 files
+2016-10-23T21:15:39: astropy.CallDepth = 0
+2016-10-23T21:15:39: matplotlib.CallDepth = 3
+2016-10-23T21:15:39: pandas.CallDepth = 0
+2016-10-23T21:15:39: sympy.CallDepth = 0
+2016-10-23T21:15:39: Start group "C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\pkg_resources" with 14 files
+2016-10-23T21:15:40: Parsing "pkg_resources" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\pkg_resources\__init__.py")
+2016-10-23T21:15:40: Parsing "pkg_resources.extern" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\pkg_resources\extern\__init__.py")
+2016-10-23T21:15:40: Parsing "pkg_resources._vendor.pyparsing" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\pkg_resources\_vendor\pyparsing.py")
+2016-10-23T21:15:40: Parsing "pkg_resources._vendor.six" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\pkg_resources\_vendor\six.py")
+2016-10-23T21:15:40: Parsing "pkg_resources._vendor" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\pkg_resources\_vendor\__init__.py")
+2016-10-23T21:15:40: Parsing "pkg_resources._vendor.packaging.markers" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\pkg_resources\_vendor\packaging\markers.py")
+2016-10-23T21:15:40: Parsing "pkg_resources._vendor.packaging.requirements" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\pkg_resources\_vendor\packaging\requirements.py")
+2016-10-23T21:15:40: Parsing "pkg_resources._vendor.packaging.specifiers" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\pkg_resources\_vendor\packaging\specifiers.py")
+2016-10-23T21:15:40: Parsing "pkg_resources._vendor.packaging.utils" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\pkg_resources\_vendor\packaging\utils.py")
+2016-10-23T21:15:40: Parsing "pkg_resources._vendor.packaging.version" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\pkg_resources\_vendor\packaging\version.py")
+2016-10-23T21:15:40: Parsing "pkg_resources._vendor.packaging._compat" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\pkg_resources\_vendor\packaging\_compat.py")
+2016-10-23T21:15:40: Parsing "pkg_resources._vendor.packaging._structures" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\pkg_resources\_vendor\packaging\_structures.py")
+2016-10-23T21:15:40: Parsing "pkg_resources._vendor.packaging.__about__" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\pkg_resources\_vendor\packaging\__about__.py")
+2016-10-23T21:15:40: Parsing "pkg_resources._vendor.packaging" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\pkg_resources\_vendor\packaging\__init__.py")
+2016-10-23T21:15:40: Parsing complete
+2016-10-23T21:15:40: Analyzing "pkg_resources"
+2016-10-23T21:15:40: Analyzing "pkg_resources.extern"
+2016-10-23T21:15:40: Analyzing "pkg_resources._vendor.pyparsing"
+2016-10-23T21:15:40: Analyzing "pkg_resources._vendor.six"
+2016-10-23T21:15:40: Analyzing "pkg_resources._vendor"
+2016-10-23T21:15:40: Analyzing "pkg_resources._vendor.packaging.markers"
+2016-10-23T21:15:40: Analyzing "pkg_resources._vendor.packaging.requirements"
+2016-10-23T21:15:40: Analyzing "pkg_resources._vendor.packaging.specifiers"
+2016-10-23T21:15:40: Analyzing "pkg_resources._vendor.packaging.utils"
+2016-10-23T21:15:40: Analyzing "pkg_resources._vendor.packaging.version"
+2016-10-23T21:15:40: Analyzing "pkg_resources._vendor.packaging._compat"
+2016-10-23T21:15:40: Analyzing "pkg_resources._vendor.packaging._structures"
+2016-10-23T21:15:40: Analyzing "pkg_resources._vendor.packaging.__about__"
+2016-10-23T21:15:40: Analyzing "pkg_resources._vendor.packaging"
+2016-10-23T21:15:40: Starting analysis of 14 modules
+2016-10-23T21:15:48: Analysis complete
+2016-10-23T21:15:48: Saving group "C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\pkg_resources"
+2016-10-23T21:15:48: End of group "C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\pkg_resources"
+2016-10-23T21:15:51: Deleting 0 files
+
+2016-10-24T20:17:00: Start analysis
+2016-10-24T20:17:00: [WARNING] Library was set explicitly - skipping path detection
+2016-10-24T20:17:00: IncludeModulesFromModulePath = win32com
+2016-10-24T20:17:09: Deleting 40 files
+2016-10-24T20:17:10: astropy.CallDepth = 0
+2016-10-24T20:17:10: matplotlib.CallDepth = 3
+2016-10-24T20:17:10: pandas.CallDepth = 0
+2016-10-24T20:17:10: sympy.CallDepth = 0
+2016-10-24T20:17:10: Start group "C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools" with 41 files
+2016-10-24T20:17:11: Parsing "setuptools.archive_util" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools\archive_util.py")
+2016-10-24T20:17:12: Parsing "setuptools.depends" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools\depends.py")
+2016-10-24T20:17:12: Parsing "setuptools.dist" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools\dist.py")
+2016-10-24T20:17:12: Parsing "setuptools.extension" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools\extension.py")
+2016-10-24T20:17:12: Parsing "setuptools.launch" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools\launch.py")
+2016-10-24T20:17:12: Parsing "setuptools.lib2to3_ex" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools\lib2to3_ex.py")
+2016-10-24T20:17:12: Parsing "setuptools.msvc9_support" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools\msvc9_support.py")
+2016-10-24T20:17:12: Parsing "setuptools.package_index" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools\package_index.py")
+2016-10-24T20:17:12: Parsing "setuptools.py26compat" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools\py26compat.py")
+2016-10-24T20:17:12: Parsing "setuptools.py27compat" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools\py27compat.py")
+2016-10-24T20:17:12: Parsing "setuptools.py31compat" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools\py31compat.py")
+2016-10-24T20:17:12: Parsing "setuptools.sandbox" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools\sandbox.py")
+2016-10-24T20:17:12: Parsing "setuptools.ssl_support" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools\ssl_support.py")
+2016-10-24T20:17:12: Parsing "setuptools.unicode_utils" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools\unicode_utils.py")
+2016-10-24T20:17:12: Parsing "setuptools.utils" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools\utils.py")
+2016-10-24T20:17:12: Parsing "setuptools.version" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools\version.py")
+2016-10-24T20:17:12: Parsing "setuptools.windows_support" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools\windows_support.py")
+2016-10-24T20:17:12: Parsing "setuptools" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools\__init__.py")
+2016-10-24T20:17:12: Parsing "setuptools.command.alias" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools\command\alias.py")
+2016-10-24T20:17:12: Parsing "setuptools.command.bdist_egg" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools\command\bdist_egg.py")
+2016-10-24T20:17:12: Parsing "setuptools.command.bdist_rpm" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools\command\bdist_rpm.py")
+2016-10-24T20:17:12: Parsing "setuptools.command.bdist_wininst" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools\command\bdist_wininst.py")
+2016-10-24T20:17:12: Parsing "setuptools.command.build_ext" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools\command\build_ext.py")
+2016-10-24T20:17:12: Parsing "setuptools.command.build_py" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools\command\build_py.py")
+2016-10-24T20:17:12: Parsing "setuptools.command.develop" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools\command\develop.py")
+2016-10-24T20:17:12: Parsing "setuptools.command.easy_install" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools\command\easy_install.py")
+2016-10-24T20:17:12: Parsing "setuptools.command.egg_info" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools\command\egg_info.py")
+2016-10-24T20:17:12: Parsing "setuptools.command.install" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools\command\install.py")
+2016-10-24T20:17:12: Parsing "setuptools.command.install_egg_info" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools\command\install_egg_info.py")
+2016-10-24T20:17:12: Parsing "setuptools.command.install_lib" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools\command\install_lib.py")
+2016-10-24T20:17:12: Parsing "setuptools.command.install_scripts" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools\command\install_scripts.py")
+2016-10-24T20:17:12: Parsing "setuptools.command.register" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools\command\register.py")
+2016-10-24T20:17:12: Parsing "setuptools.command.rotate" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools\command\rotate.py")
+2016-10-24T20:17:12: Parsing "setuptools.command.saveopts" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools\command\saveopts.py")
+2016-10-24T20:17:12: Parsing "setuptools.command.sdist" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools\command\sdist.py")
+2016-10-24T20:17:12: Parsing "setuptools.command.setopt" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools\command\setopt.py")
+2016-10-24T20:17:12: Parsing "setuptools.command.test" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools\command\test.py")
+2016-10-24T20:17:12: Parsing "setuptools.command.upload" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools\command\upload.py")
+2016-10-24T20:17:12: Parsing "setuptools.command.upload_docs" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools\command\upload_docs.py")
+2016-10-24T20:17:12: Parsing "setuptools.command" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools\command\__init__.py")
+2016-10-24T20:17:12: Parsing "setuptools.extern" ("C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools\extern\__init__.py")
+2016-10-24T20:17:12: Parsing complete
+2016-10-24T20:17:12: Analyzing "setuptools.archive_util"
+2016-10-24T20:17:13: Analyzing "setuptools.depends"
+2016-10-24T20:17:13: Analyzing "setuptools.dist"
+2016-10-24T20:17:13: Analyzing "setuptools.extension"
+2016-10-24T20:17:13: Analyzing "setuptools.launch"
+2016-10-24T20:17:13: Analyzing "setuptools.lib2to3_ex"
+2016-10-24T20:17:13: Analyzing "setuptools.msvc9_support"
+2016-10-24T20:17:13: Analyzing "setuptools.package_index"
+2016-10-24T20:17:13: Analyzing "setuptools.py26compat"
+2016-10-24T20:17:13: Analyzing "setuptools.py27compat"
+2016-10-24T20:17:13: Analyzing "setuptools.py31compat"
+2016-10-24T20:17:13: Analyzing "setuptools.sandbox"
+2016-10-24T20:17:13: Analyzing "setuptools.ssl_support"
+2016-10-24T20:17:13: Analyzing "setuptools.unicode_utils"
+2016-10-24T20:17:13: Analyzing "setuptools.utils"
+2016-10-24T20:17:13: Analyzing "setuptools.version"
+2016-10-24T20:17:13: Analyzing "setuptools.windows_support"
+2016-10-24T20:17:13: Analyzing "setuptools"
+2016-10-24T20:17:13: Analyzing "setuptools.command.alias"
+2016-10-24T20:17:13: Analyzing "setuptools.command.bdist_egg"
+2016-10-24T20:17:13: Analyzing "setuptools.command.bdist_rpm"
+2016-10-24T20:17:13: Analyzing "setuptools.command.bdist_wininst"
+2016-10-24T20:17:13: Analyzing "setuptools.command.build_ext"
+2016-10-24T20:17:13: Analyzing "setuptools.command.build_py"
+2016-10-24T20:17:13: Analyzing "setuptools.command.develop"
+2016-10-24T20:17:13: Analyzing "setuptools.command.easy_install"
+2016-10-24T20:17:13: Analyzing "setuptools.command.egg_info"
+2016-10-24T20:17:13: Analyzing "setuptools.command.install"
+2016-10-24T20:17:13: Analyzing "setuptools.command.install_egg_info"
+2016-10-24T20:17:13: Analyzing "setuptools.command.install_lib"
+2016-10-24T20:17:13: Analyzing "setuptools.command.install_scripts"
+2016-10-24T20:17:13: Analyzing "setuptools.command.register"
+2016-10-24T20:17:13: Analyzing "setuptools.command.rotate"
+2016-10-24T20:17:13: Analyzing "setuptools.command.saveopts"
+2016-10-24T20:17:13: Analyzing "setuptools.command.sdist"
+2016-10-24T20:17:13: Analyzing "setuptools.command.setopt"
+2016-10-24T20:17:13: Analyzing "setuptools.command.test"
+2016-10-24T20:17:13: Analyzing "setuptools.command.upload"
+2016-10-24T20:17:13: Analyzing "setuptools.command.upload_docs"
+2016-10-24T20:17:13: Analyzing "setuptools.command"
+2016-10-24T20:17:13: Analyzing "setuptools.extern"
+2016-10-24T20:17:13: Starting analysis of 41 modules
+2016-10-24T20:17:29: Analysis complete
+2016-10-24T20:17:29: Saving group "C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools"
+2016-10-24T20:17:30: End of group "C:\Users\czh\Desktop\Django\DjangoFinance\DjangoFinance\env\Lib\site-packages\setuptools"
+2016-10-24T20:17:34: Deleting 0 files
