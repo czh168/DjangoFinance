@@ -209,11 +209,23 @@ class BatchImport(models.Model):
             return datetime.datetime.strptime(str, "%Y-%m-%d %H:%M:%S")
         elif ftype in (models.BooleanField,models.NullBooleanField):
             return  self.StrBoolValue(str)
+        elif ftype in (models.ForeignKey,):
+            return self.GetForeignObj(str,field)
         else:
-            return str
+            if len(field.choices):
+                return self.GetChoiceValue(str,field.choices)
+            else:
+                return str
+#返回choice值
+    def GetChoiceValue(self,name,choices):
+        for i in choices:
+            if i[1]==name:
+                return i[0]
+    def GetForeignObj(self,str,field):
+        return str             
 #导入数据
     def ImportData(self,appname,modelname,path):
-        csvs=csv.DictReader(open(path, 'r'))
+        csvrows=csv.DictReader(open(path, 'r'))
 #获取model
         m = apps.get_app_config(appname).get_model(modelname)
 #获取字段verbose_name
@@ -223,10 +235,11 @@ class BatchImport(models.Model):
 #生成verbose_name与field的字典
         v_f=dict(zip( fverbose_names, fields))
 #导入数据
-        for r in csvs:
+        for csvrow in csvrows:
             e=m()
-            for fname in r:
-                setattr(e,v_f[fname].name,r[fname])
+            for name in csvrow:
+                f=v_f[name]
+                setattr(e,f.name,self.TypeChange(f,csvrow[name]))
             e.save()       
     def __str__(self):
         return self.ModelName
