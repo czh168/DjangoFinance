@@ -204,9 +204,9 @@ class BatchImport(models.Model):
     def TypeChange(self,field,str):
         ftype=type(field)
         if ftype in (models.DateField,):
-            return datetime.datetime.strptime(str, "%Y-%m-%d").date()
+            return datetime.datetime.strptime(str, "%Y/%m/%d").date()
         elif ftype in ( models.DateTimeField,):
-            return datetime.datetime.strptime(str, "%Y-%m-%d %H:%M:%S")
+            return datetime.datetime.strptime(str, "%Y/%m/%d %H:%M:%S")
         elif ftype in (models.BooleanField,models.NullBooleanField):
             return  self.StrBoolValue(str)
         elif ftype in (models.ForeignKey,):
@@ -222,7 +222,11 @@ class BatchImport(models.Model):
             if i[1]==name:
                 return i[0]
     def GetForeignObj(self,str,field):
-        return str             
+        m=field.related_model
+        for r in m.objects.all():
+            if "%s"%r==str:
+                return r
+         
 #导入数据
     def ImportData(self,appname,modelname,path):
         csvrows=csv.DictReader(open(path, 'r'))
