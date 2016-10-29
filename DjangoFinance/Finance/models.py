@@ -14,7 +14,7 @@ import csv
 #机构
 class Agency(models.Model):
     Name= models.CharField('名称', max_length=30,blank=True, null=True)
-    Type=models.CharField('机构类型', choices=(('1', "银行"),('2', "证券公司"),('3', "理财平台"),('3',"p2p平台"),('4',"基金公司")),max_length=1,blank=True, null=True)
+    Type=models.CharField('机构类型', choices=(('1', "银行"),('2', "证券公司"),('3', "理财平台"),('4',"p2p平台"),('5',"基金公司")),max_length=1,blank=True, null=True)
     Comment= models.CharField('说明', max_length=100,blank=True, null=True)
     def __str__(self):
         return self.Name

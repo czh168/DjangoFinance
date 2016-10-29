@@ -12,7 +12,6 @@ distlib
 vendored
 progress
 glob
-_markerlib
 DEBUNDLED
 cachecontrol
 lockfile

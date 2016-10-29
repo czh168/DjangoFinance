@@ -33,14 +33,15 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'app',
+    'Finance',
     # Add your apps here to enable them
+    'suit',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'Finance',
     'controlcenter',
 ]
 
@@ -132,3 +133,46 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATIC_ROOT = posixpath.join(*(BASE_DIR.split(os.path.sep) + ['static']))
+
+SUIT_CONFIG = {
+    # header
+    'ADMIN_NAME': '理财管理',
+    # 'HEADER_DATE_FORMAT': 'l, j. F Y',
+    # 'HEADER_TIME_FORMAT': 'H:i',
+
+    # forms
+    # 'SHOW_REQUIRED_ASTERISK': True,  # Default True
+    # 'CONFIRM_UNSAVED_CHANGES': True, # Default True
+
+    # menu
+    #'SEARCH_URL': '/admin/auth/user/',
+    # 'MENU_ICONS': {
+    #    'sites': 'icon-leaf',
+    #    'auth': 'icon-lock',
+    # },
+    'MENU_OPEN_FIRST_CHILD': False, # Default True
+
+     'MENU': ( 
+        {'label':'基础数据','models':[
+            {'label':'户头','url':'/admin/Finance/account'},
+            {'label':'机构','url':'/admin/Finance/agency'},
+            {'label':'投资类别','url':'/admin/Finance/investtype'},
+            {'label':'利息类型','url':'/admin/Finance/intresttype'},
+            {'label':'权益类信息','url':'/admin/Finance/equity'},
+        ]},
+        {'label':'固定收益类','models':[
+            {'label':'固定收益类登记','url':'/admin/Finance/fixedincome'},
+            {'label':'固定收益类现金流','url':'/admin/Finance/fixedincomecashflow'},
+        ]},
+        {'label':'权益类','models':[
+            {'label':'权益类登记','url':'/admin/Finance/fixedincome'},
+        ]},
+        { 'label':'设置','app':'auth'},
+        { 'label':'数据','models':[
+            {'label':'数据导入','url':'/admin/Finance/batchimport'},
+        ]},
+     ),
+
+    # misc
+    'LIST_PER_PAGE': 30
+}
