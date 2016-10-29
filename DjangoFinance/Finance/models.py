@@ -14,6 +14,7 @@ import csv
 #机构
 class Agency(models.Model):
     Name= models.CharField('名称', max_length=30,blank=True, null=True)
+    Type=models.CharField('机构类型', choices=(('1', "银行"),('2', "证券公司"),('3', "理财平台"),('3',"p2p平台"),('4',"基金公司")),max_length=1,blank=True, null=True)
     Comment= models.CharField('说明', max_length=100,blank=True, null=True)
     def __str__(self):
         return self.Name
@@ -21,7 +22,7 @@ class Agency(models.Model):
     class Meta:
         verbose_name = '机构'
         verbose_name_plural = '机构'
-        ordering = ['Name']  # 按照哪个栏目排序
+        ordering = ['Type','Name']  # 按照哪个栏目排序
 #户头
 class Account(models.Model):
     Name= models.CharField('名称', max_length=30,blank=True, null=True)
@@ -163,7 +164,7 @@ class Equity(models.Model):
     Name= models.CharField('股票名称', max_length=50,blank=True, null=True)
     Code=models.CharField('股票代码', max_length=20,blank=True, null=True)
     Price=models.FloatField('股票价格' ,blank=True, null=True,default=0)
-    Type=models.CharField('类型', choices=(('1', "上海"),('2', "深圳"),('3', "基金"),('3',"自定义")),max_length=1,blank=True, null=True)
+    Type=models.CharField('类型', choices=(('1', "上海"),('2', "深圳"),('3', "基金"),('4',"自定义")),max_length=1,blank=True, null=True)
     def GetInternetPrice(self,code,type):
             t={'基金':'f_','上海':'sh','深圳':'sz'}
             p={'基金':1,'上海':3,'深圳':3}
@@ -211,10 +212,13 @@ class BatchImport(models.Model):
             return  self.StrBoolValue(str)
         elif ftype in (models.ForeignKey,):
             return self.GetForeignObj(str,field)
+        elif ftype in (models.FloatField,models,):
+            return float(str)
         else:
             if len(field.choices):
                 return self.GetChoiceValue(str,field.choices)
             else:
+                print(str)
                 return str
 #返回choice值
     def GetChoiceValue(self,name,choices):

@@ -3,7 +3,7 @@ from Finance.models import *
 # Register your models here.
 #base**************************************************************************
 class Agency_Admin(admin.ModelAdmin):
-    list_display=('Name','Comment')
+    list_display=('Type','Name','Comment')
 admin.site.register(Agency,Agency_Admin)
 
 class Account_Admin(admin.ModelAdmin):
@@ -34,6 +34,7 @@ admin.site.register(BatchImport,BatchImport_Admin)
 #main****************************************************************************
 class FixedIcome_Admin(admin.ModelAdmin):
     list_display=('Name','Agency','Account','Spend','Investtype','Buydate','Maturity','IntresType','AnnualizedYield','Discount','Comment','Completed')
+    list_filter=('Completed',)
     actions = ['make_completed','genCashFlowA']
 
     def make_completed(self, request, queryset):
