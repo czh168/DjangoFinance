@@ -11,10 +11,20 @@ import csv
 #*******************************************************************************************************************
 #************                                         base                                              ************
 #*******************************************************************************************************************
+#机构类型
+class AgencyType(models.Model):
+    Name= models.CharField('类型名称', max_length=30,blank=True, null=True)
+    def __str__(self):
+        return self.Name
+    class Meta:
+        verbose_name = '机构类型'
+        verbose_name_plural = '机构类型'
+        ordering = ['Name',]  # 按照哪个栏目排序
 #机构
 class Agency(models.Model):
     Name= models.CharField('名称', max_length=30,blank=True, null=True)
-    Type=models.CharField('机构类型', choices=(('1', "银行"),('2', "证券公司"),('3', "理财平台"),('4',"p2p平台"),('5',"基金公司")),max_length=1,blank=True, null=True)
+    #Type=models.CharField('机构类型', choices=(('1', "银行"),('2', "证券公司"),('3', "理财平台"),('4',"p2p平台"),('5',"基金公司")),max_length=1,blank=True, null=True)
+    Type=models.ForeignKey(AgencyType,blank=True, null=True,verbose_name='机构类型')
     Comment= models.CharField('说明', max_length=100,blank=True, null=True)
     def __str__(self):
         return self.Name
@@ -232,10 +242,11 @@ class BatchImport(models.Model):
                 return r
          
 #导入数据
-    def ImportData(self,appname,modelname,path):
+    def ImportData(self,appname,modelverbosename,path):
         csvrows=csv.DictReader(open(path, 'r'))
 #获取model
-        m = apps.get_app_config(appname).get_model(modelname)
+#        m = apps.get_app_config(appname).get_model(modelname)
+        m=[m for m in apps.get_app_config(appname).get_models() if m._meta.verbose_name==modelverbosename][0]
 #获取字段verbose_name
         fverbose_names=[f.verbose_name for f in m._meta.get_fields() if not f.auto_created]
 #获取字段

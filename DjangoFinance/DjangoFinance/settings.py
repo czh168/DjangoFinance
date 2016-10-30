@@ -155,6 +155,7 @@ SUIT_CONFIG = {
      'MENU': ( 
         {'label':'基础数据','models':[
             {'label':'户头','url':'/admin/Finance/account'},
+            {'label':'机构类型','url':'/admin/Finance/agencytype'},
             {'label':'机构','url':'/admin/Finance/agency'},
             {'label':'投资类别','url':'/admin/Finance/investtype'},
             {'label':'利息类型','url':'/admin/Finance/intresttype'},

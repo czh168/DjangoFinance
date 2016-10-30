@@ -2,6 +2,10 @@ from django.contrib import admin
 from Finance.models import *
 # Register your models here.
 #base**************************************************************************
+class AgencyType_Admin(admin.ModelAdmin):
+    list_display=('Name',)
+admin.site.register(AgencyType,AgencyType_Admin)
+
 class Agency_Admin(admin.ModelAdmin):
     list_display=('Type','Name','Comment')
 admin.site.register(Agency,Agency_Admin)
