@@ -158,7 +158,9 @@ SUIT_CONFIG = {
             {'label':'机构类型','url':'/admin/Finance/agencytype'},
             {'label':'机构','url':'/admin/Finance/agency'},
             {'label':'投资类别','url':'/admin/Finance/investtype'},
+            '-',
             {'label':'利息类型','url':'/admin/Finance/intresttype'},
+            '-',
             {'label':'权益类信息','url':'/admin/Finance/equity'},
         ]},
         {'label':'固定收益类','models':[

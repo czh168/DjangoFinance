@@ -11,8 +11,16 @@ import csv
 #*******************************************************************************************************************
 #************                                         base                                              ************
 #*******************************************************************************************************************
+#模型基类
+class FModel(models.Model):
+    KeyName= models.CharField('主键名称', max_length=50,blank=True, null=True)
+    def save(self, *args, **kwargs):        
+        self.KeyName='%s'%self
+        super(FModel, self).save(*args, **kwargs)
+    class Meta:
+        abstract = True
 #机构类型
-class AgencyType(models.Model):
+class AgencyType(FModel):
     Name= models.CharField('类型名称', max_length=30,blank=True, null=True)
     def __str__(self):
         return self.Name
@@ -21,7 +29,7 @@ class AgencyType(models.Model):
         verbose_name_plural = '机构类型'
         ordering = ['Name',]  # 按照哪个栏目排序
 #机构
-class Agency(models.Model):
+class Agency(FModel):
     Name= models.CharField('名称', max_length=30,blank=True, null=True)
     #Type=models.CharField('机构类型', choices=(('1', "银行"),('2', "证券公司"),('3', "理财平台"),('4',"p2p平台"),('5',"基金公司")),max_length=1,blank=True, null=True)
     Type=models.ForeignKey(AgencyType,blank=True, null=True,verbose_name='机构类型')
@@ -34,7 +42,7 @@ class Agency(models.Model):
         verbose_name_plural = '机构'
         ordering = ['Type','Name']  # 按照哪个栏目排序
 #户头
-class Account(models.Model):
+class Account(FModel):
     Name= models.CharField('名称', max_length=30,blank=True, null=True)
     Comment= models.CharField('说明', max_length=100,blank=True, null=True)
     def __str__(self):
@@ -44,7 +52,7 @@ class Account(models.Model):
         verbose_name_plural = '户头'
         ordering = ['Name']  # 按照哪个栏目排序
 #投资类别
-class InvestType(models.Model):
+class InvestType(FModel):
     Name= models.CharField('类名', max_length=30,blank=True, null=True)
     SubName= models.CharField('子类名', max_length=30,blank=True, null=True)
     Comment= models.CharField('说明', max_length=100,blank=True, null=True)
@@ -81,7 +89,7 @@ def add_by_month(datetime1, n = 1):
         return datetime2
     return datetime2.replace(day = datetime1.day)
 #利息类型
-class IntrestType(models.Model):
+class IntrestType(FModel):
     Name= models.CharField('类名', max_length=30,blank=True, null=True)
     Comment= models.CharField('说明', max_length=100,blank=True, null=True)
     #一次性还本付息
@@ -162,7 +170,7 @@ class IntrestType(models.Model):
         verbose_name_plural = '利息类型'
         ordering = ['Name']  # 按照哪个栏目排序
 #现金流
-class CashFlow(models.Model):
+class CashFlow(FModel):
     HappendDate=models.DateField('日期',editable=True)
     Amount=models.FloatField('金额' ,blank=True, null=True)
     class Meta:
@@ -170,7 +178,7 @@ class CashFlow(models.Model):
         
 #*******************************************************************************************************************
 #权益类信息
-class Equity(models.Model):
+class Equity(FModel):
     Name= models.CharField('股票名称', max_length=50,blank=True, null=True)
     Code=models.CharField('股票代码', max_length=20,blank=True, null=True)
     Price=models.FloatField('股票价格' ,blank=True, null=True,default=0)
@@ -195,7 +203,7 @@ class Equity(models.Model):
         ordering = ['Type','Code']  # 按照哪个栏目排序
 #**********************************************************************************************************************
 #数据导入
-class BatchImport(models.Model):
+class BatchImport(FModel):
     ModelName= models.CharField('模型名称', max_length=50,blank=True, null=True)
     UploadFile= models.FileField('上传文件',upload_to='./upload/%Y-%m-%d/')
     UploadTime=models.DateTimeField('上传时间',auto_now=True, null=True,blank=True)
@@ -270,7 +278,7 @@ class BatchImport(models.Model):
 #*************                                      main                                           ****************
 #******************************************************************************************************************
 #固定收益类
-class  FixedIncome(models.Model):
+class  FixedIncome(FModel):
     Name= models.CharField('名称', max_length=256,blank=True, null=True)
     Agency=models.ForeignKey(Agency,blank=True, null=True,verbose_name='机构')
     Account=models.ForeignKey(Account,blank=True, null=True,verbose_name='户头')
@@ -307,7 +315,7 @@ class FixedIncomeCashFlow(CashFlow):
         
 #*******************************************************************************************************************
 #权益类登记
-class EquityReg(models.Model):
+class EquityReg(FModel):
     Agency=models.ForeignKey(Agency,blank=True, null=True,verbose_name='机构')
     Account=models.ForeignKey(Account,blank=True, null=True,verbose_name='户头')
     InvestType=models.ForeignKey(InvestType,blank=True, null=True,verbose_name='投资类别')
