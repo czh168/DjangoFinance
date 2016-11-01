@@ -245,9 +245,10 @@ class BatchImport(FModel):
                 return i[0]
     def GetForeignObj(self,str,field):
         m=field.related_model
-        for r in m.objects.all():
-            if "%s"%r==str:
-                return r
+        return m.objects.get(KeyName=str)
+        #for r in m.objects.all():
+        #    if "%s"%r==str:
+        #        return r
          
 #导入数据
     def ImportData(self,appname,modelverbosename,path):

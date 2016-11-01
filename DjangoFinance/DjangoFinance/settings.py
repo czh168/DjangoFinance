@@ -168,7 +168,7 @@ SUIT_CONFIG = {
             {'label':'固定收益类现金流','url':'/admin/Finance/fixedincomecashflow'},
         ]},
         {'label':'权益类','models':[
-            {'label':'权益类登记','url':'/admin/Finance/fixedincome'},
+            {'label':'权益类登记','url':'/admin/Finance/equityreg'},
         ]},
         { 'label':'设置','app':'auth'},
         { 'label':'数据','models':[
