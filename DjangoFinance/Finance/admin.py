@@ -58,10 +58,12 @@ class FixedIncomeCashFlow_Admin(admin.ModelAdmin):
 admin.site.register(FixedIncomeCashFlow,FixedIncomeCashFlow_Admin)
 
 class EquityPosition_Admin(admin.ModelAdmin):
+    readonly_fields = ('Amount',)
     list_display=('InvestType','Equity','Amount','AvgPrice','Quantity','UpdateDate','Comment')
 admin.site.register(EquityPosition,EquityPosition_Admin)
 
 class EquityReg_Admin(admin.ModelAdmin):
+    readonly_fields = ('Amount',)
     list_display=('Agency','Account','EquityPosition','Amount','Price','Quantity','TradeDate','Comment')
 admin.site.register(EquityReg,EquityReg_Admin)
 
