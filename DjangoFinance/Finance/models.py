@@ -322,7 +322,7 @@ class EquityPosition(FModel):
     #Amount=models.FloatField('市值' ,blank=True, null=True,default=0)
     AvgPrice=models.FloatField('均价' ,blank=True, null=True,default=0)
     Quantity=models.FloatField('持仓数量' ,blank=True, null=True,default=0)
-    UpdateDate=models.DateField('更新日期',  editable=True, null=True)
+    UpdateDate=models.DateField('更新日期',  editable=True, null=True,default=datetime.date(1900,1,1))
     Comment= models.CharField('说明', max_length=100,blank=True, null=True)
     def Amount(self):
         return self.AvgPrice * self.Quantity
