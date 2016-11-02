@@ -315,12 +315,27 @@ class FixedIncomeCashFlow(CashFlow):
         ordering = ['HappendDate']  # 按照哪个栏目排序
         
 #*******************************************************************************************************************
+#权益类持仓
+class EquityPosition(FModel):
+    InvestType=models.ForeignKey(InvestType,blank=True, null=True,verbose_name='投资类别')
+    Equity=models.ForeignKey(Equity,blank=True, null=True,verbose_name='权益类信息')
+    Amount=models.FloatField('市值' ,blank=True, null=True,default=0)
+    AvgPrice=models.FloatField('均价' ,blank=True, null=True,default=0)
+    Quantity=models.FloatField('持仓数量' ,blank=True, null=True,default=0)
+    UpdateDate=models.DateField('更新日期',  editable=True, null=True)
+    Comment= models.CharField('说明', max_length=100,blank=True, null=True)
+
+    def __str__(self):
+        return '%s'%self.InvestType+'/'+self.Equity.Name+self.Equity.Code
+    class Meta:
+        verbose_name = '权益类持仓'
+        verbose_name_plural = '权益类持仓'
+        ordering = ['InvestType','Equity',]  # 按照哪个栏目排序
 #权益类登记
 class EquityReg(FModel):
     Agency=models.ForeignKey(Agency,blank=True, null=True,verbose_name='机构')
     Account=models.ForeignKey(Account,blank=True, null=True,verbose_name='户头')
-    InvestType=models.ForeignKey(InvestType,blank=True, null=True,verbose_name='投资类别')
-    Equity=models.ForeignKey(Equity,blank=True, null=True,verbose_name='权益类信息')
+    EquityPosition=models.ForeignKey(EquityPosition,blank=True, null=True,verbose_name='权益类持仓')
     Amount=models.FloatField('成交金额' ,blank=True, null=True,default=0)
     Price=models.FloatField('成交单价' ,blank=True, null=True,default=0)
     Quantity=models.FloatField('成交数量' ,blank=True, null=True,default=0)
