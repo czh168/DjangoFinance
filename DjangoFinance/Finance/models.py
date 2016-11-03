@@ -3,15 +3,24 @@ from django.db import models
 from django.db.models.fields import *
 from django.core.urlresolvers import reverse
 from django.apps import apps
+
 import datetime
 import urllib.request
 import csv
 import logging
 
 # Create your models here.
-
 #*******************************************************************************************************************
-#************                                         base                                              ************
+#**********                                       common函数                                           *************
+#*******************************************************************************************************************
+#错误处理
+def err_proc(errstr,err):
+    errstr="%s(***%s***)"%(errstr,err)
+    logger = logging.getLogger('Finance')
+    logger.error(errstr)
+    raise Exception(errstr)
+#*******************************************************************************************************************
+#************                                         base类                                            ************
 #*******************************************************************************************************************
 #模型基类
 class FModel(models.Model):
@@ -247,12 +256,15 @@ class BatchImport(FModel):
                 return i[0]
     def GetForeignObj(self,str,field):
         m=field.related_model
-        logger = logging.getLogger('Finance')
-        logger.error('%s:%s'%(field.verbose_name,str))
-        return m.objects.get(KeyName=str)
+        try:
+            return m.objects.get(KeyName=str)
         #for r in m.objects.all():
         #    if "%s"%r==str:
         #        return r
+        except Exception:
+            logger = logging.getLogger('Finance')
+            logger.error('%s:%s'%(field.verbose_name,str))
+
          
 #导入数据
     def ImportData(self,appname,modelverbosename,path):
@@ -270,8 +282,14 @@ class BatchImport(FModel):
         for csvrow in csvrows:
             e=m()
             for name in csvrow:
-                f=v_f[name]
-                setattr(e,f.name,self.TypeChange(f,csvrow[name]))
+                try:
+                    f=v_f[name]
+                except Exception as err:
+                    err_proc("name:%s不存在，csv行：%s"%(name,csvrow),err)
+                try:
+                    setattr(e,f.name,self.TypeChange(f,csvrow[name]))
+                except Exception as err:
+                    err_proc('赋值错误，f.name=%s'%f.name,err)
             e.save()       
     def __str__(self):
         return self.ModelName
