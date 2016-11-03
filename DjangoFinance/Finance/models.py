@@ -6,6 +6,8 @@ from django.apps import apps
 import datetime
 import urllib.request
 import csv
+import logging
+
 # Create your models here.
 
 #*******************************************************************************************************************
@@ -245,6 +247,8 @@ class BatchImport(FModel):
                 return i[0]
     def GetForeignObj(self,str,field):
         m=field.related_model
+        logger = logging.getLogger('Finance')
+        logger.error('%s:%s'%(field.verbose_name,str))
         return m.objects.get(KeyName=str)
         #for r in m.objects.all():
         #    if "%s"%r==str:
@@ -328,7 +332,7 @@ class EquityPosition(FModel):
         return self.AvgPrice * self.Quantity
     Amount.short_description='市值'
     def __str__(self):
-        return '%s'%self.InvestType+'/'+self.Equity.Name+self.Equity.Code
+        return '%s'%self.InvestType+'/'+self.Equity.Code+self.Equity.Name
     class Meta:
         verbose_name = '权益类持仓'
         verbose_name_plural = '权益类持仓'

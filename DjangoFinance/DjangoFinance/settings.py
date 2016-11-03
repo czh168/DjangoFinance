@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 import os
 import posixpath
+#import logging
+#import django.utils.log
+#import logging.handlers
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -134,6 +137,7 @@ STATIC_URL = '/static/'
 
 STATIC_ROOT = posixpath.join(*(BASE_DIR.split(os.path.sep) + ['static']))
 
+
 SUIT_CONFIG = {
     # header
     'ADMIN_NAME': '理财管理',
@@ -178,5 +182,24 @@ SUIT_CONFIG = {
      ),
 
     # misc
-    'LIST_PER_PAGE': 30
+    'LIST_PER_PAGE': 50
+}
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': '/log/debug.log',
+        },
+    },
+    'loggers': {
+        'Finance': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
 }

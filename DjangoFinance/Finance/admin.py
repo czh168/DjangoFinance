@@ -58,8 +58,13 @@ class FixedIncomeCashFlow_Admin(admin.ModelAdmin):
 admin.site.register(FixedIncomeCashFlow,FixedIncomeCashFlow_Admin)
 
 class EquityPosition_Admin(admin.ModelAdmin):
+    def batch_update(self,request,queryset):
+        for e in queryset:
+            e.save()
+    batch_update.short_description="重新保存"
     readonly_fields = ('Amount',)
     list_display=('InvestType','Equity','Amount','AvgPrice','Quantity','UpdateDate','Comment')
+    actions = ['batch_update']
 admin.site.register(EquityPosition,EquityPosition_Admin)
 
 class EquityReg_Admin(admin.ModelAdmin):
