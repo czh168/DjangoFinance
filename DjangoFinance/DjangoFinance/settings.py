@@ -182,7 +182,7 @@ SUIT_CONFIG = {
      ),
 
     # misc
-    'LIST_PER_PAGE': 50
+    'LIST_PER_PAGE': 100
 }
 
 LOGGING = {
@@ -192,7 +192,7 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': '/log/debug.log',
+            'filename': 'log/debug.log',
         },
     },
     'loggers': {
