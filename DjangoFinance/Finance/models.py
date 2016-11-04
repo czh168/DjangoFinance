@@ -300,6 +300,8 @@ class BatchImport(FModel):
 #******************************************************************************************************************
 #*************                                      main                                           ****************
 #******************************************************************************************************************
+
+#*****************************************   固定收益类  **********************************************************
 #固定收益类
 class  FixedIncome(FModel):
     Name= models.CharField('名称', max_length=256,blank=True, null=True)
@@ -336,7 +338,7 @@ class FixedIncomeCashFlow(CashFlow):
         verbose_name_plural = '固定收益类现金流'
         ordering = ['HappendDate']  # 按照哪个栏目排序
         
-#*******************************************************************************************************************
+#***************************************    权益类型       ****************************************************************
 #权益类持仓
 class EquityPosition(FModel):
     InvestType=models.ForeignKey(InvestType,blank=True, null=True,verbose_name='投资类别')
@@ -369,12 +371,26 @@ class EquityReg(FModel):
 
     def Rate(self):
         try:
-            return self.Price*self.Quantity/self.Amount
+            return (self.Amount-self.Price*self.Quantity)/self.Amount
         except:
             return 0
 
     Amount.short_description='费率'
+    #保存时将EquityPositionStatu的状态设置为未保存
+    def save(self, *args, **kwargs):        
+        super(FModel, self).save(*args, **kwargs)
+        eps=EquityPositionStatu.objects.get_or_create(EquityReg=self)
+        eps[0].EquityPositionSaved=False
+        eps[0].save()
     class Meta:
         verbose_name = '权益类登记'
         verbose_name_plural = '权益类登记'
         ordering = ['TradeDate','Account','Agency']  # 按照哪个栏目排序
+#权益类状态
+class EquityPositionStatu(models.Model):
+    EquityReg=models.OneToOneField( EquityReg,blank =True,null =True,verbose_name='权益类登记')
+    EquityPositionSaved=models.BooleanField(default=False,blank =False, null=False,verbose_name='已更新至权益类持仓')
+    
+    class Meta:
+        verbose_name="权益类登记状态"
+        verbose_name_plural="权益类登记状态"
