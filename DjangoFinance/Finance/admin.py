@@ -33,6 +33,7 @@ class Equity_Admin(admin.ModelAdmin):
 admin.site.register(Equity,Equity_Admin)
 
 class BatchImport_Admin(admin.ModelAdmin):
+
     list_display=('ModelName','UploadFile','UploadTime')
 admin.site.register(BatchImport,BatchImport_Admin)
 #main****************************************************************************
@@ -57,6 +58,20 @@ class FixedIncomeCashFlow_Admin(admin.ModelAdmin):
     list_display=('HappendDate','Amount','RelateFixedIncome')
 admin.site.register(FixedIncomeCashFlow,FixedIncomeCashFlow_Admin)
 
+class EquityPositionFilter(admin.SimpleListFilter):
+    title = '是否持仓'
+    parameter_name = 'Quantity'
+    def lookups(self, request, model_admin):
+        return (
+            ('y', '是'),
+            ('n', '否'),
+        )
+    def queryset(self, request, queryset):
+        if self.value() == 'y':
+            return queryset.filter(Quantity__gt=0)
+        if self.value() == 'n':
+            return queryset.filter(Quantity__lte=0)
+        return queryset
 class EquityPosition_Admin(admin.ModelAdmin):
     def batch_update(self,request,queryset):
         for e in queryset:
@@ -65,11 +80,13 @@ class EquityPosition_Admin(admin.ModelAdmin):
     readonly_fields = ('Amount',)
     list_display=('InvestType','Equity','Amount','AvgPrice','Quantity','UpdateDate','Comment')
     actions = ['batch_update']
+    list_filter = (EquityPositionFilter,)
 admin.site.register(EquityPosition,EquityPosition_Admin)
 
 class EquityReg_Admin(admin.ModelAdmin):
-    readonly_fields = ('Amount',)
-    list_display=('Agency','Account','EquityPosition','Amount','Price','Quantity','TradeDate','Comment')
+    readonly_fields = ('Rate',)
+    list_display=('Agency','Account','EquityPosition','Amount','Rate','Price','Quantity','TradeDate','Comment')
+    #list_editable = ('Amount', )
 admin.site.register(EquityReg,EquityReg_Admin)
 
 

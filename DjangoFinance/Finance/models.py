@@ -363,11 +363,17 @@ class EquityReg(FModel):
     #Amount=models.FloatField('成交金额' ,blank=True, null=True,default=0)
     Price=models.FloatField('成交单价' ,blank=True, null=True,default=0)
     Quantity=models.FloatField('成交数量' ,blank=True, null=True,default=0)
+    Amount=models.FloatField('成交金额' ,blank=True, null=True,default=0)
     TradeDate=models.DateField('成交日期',  editable=True, null=True)
     Comment= models.CharField('说明', max_length=100,blank=True, null=True)
-    def Amount(self):
-        return self.Price*self.Quantity
-    Amount.short_description='成交金额'
+
+    def Rate(self):
+        try:
+            return self.Price*self.Quantity/self.Amount
+        except:
+            return 0
+
+    Amount.short_description='费率'
     class Meta:
         verbose_name = '权益类登记'
         verbose_name_plural = '权益类登记'
