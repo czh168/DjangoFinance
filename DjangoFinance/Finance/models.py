@@ -3,6 +3,7 @@ from django.db import models
 from django.db.models.fields import *
 from django.core.urlresolvers import reverse
 from django.apps import apps
+from django.db.models import Avg, Max, Min, Count
 
 import datetime
 import urllib.request
@@ -351,6 +352,14 @@ class EquityPosition(FModel):
     def Amount(self):
         return self.AvgPrice * self.Quantity
     Amount.short_description='市值'
+    #从权益类登记更新
+    def UpdateFromEquityReg(self):
+        n=self.EquityReg.filter(EquityPositionStatu__EquityPositionSaved=False).aggregate(count=Count('id'))
+        if n['count']>0 :
+            f
+        else:
+            return
+        raise Exception("%s"%n['count'])
     def __str__(self):
         return '%s'%self.InvestType+'/'+self.Equity.Code+self.Equity.Name
     class Meta:
@@ -361,7 +370,7 @@ class EquityPosition(FModel):
 class EquityReg(FModel):
     Agency=models.ForeignKey(Agency,blank=True, null=True,verbose_name='机构')
     Account=models.ForeignKey(Account,blank=True, null=True,verbose_name='户头')
-    EquityPosition=models.ForeignKey(EquityPosition,blank=True, null=True,verbose_name='权益类持仓')
+    EquityPosition=models.ForeignKey(EquityPosition,blank=True, null=True,verbose_name='权益类持仓',related_name='EquityReg')
     #Amount=models.FloatField('成交金额' ,blank=True, null=True,default=0)
     Price=models.FloatField('成交单价' ,blank=True, null=True,default=0)
     Quantity=models.FloatField('成交数量' ,blank=True, null=True,default=0)
@@ -371,11 +380,17 @@ class EquityReg(FModel):
 
     def Rate(self):
         try:
-            return (self.Amount-self.Price*self.Quantity)/self.Amount
+            if self.Quantity > 0:
+                q=abs(self.Quantity)
+                r= (1-self.Price*q/self.Amount)
+            else:
+                q=abs(self.Quantity)
+                r=(1-self.Amount/(self.Price*q))
         except:
-            return 0
-
-    Amount.short_description='费率'
+            r=0
+        finally:
+            return format(r,".2%")
+    Rate.short_description='费率'
     #保存时将EquityPositionStatu的状态设置为未保存
     def save(self, *args, **kwargs):        
         super(FModel, self).save(*args, **kwargs)
@@ -388,7 +403,7 @@ class EquityReg(FModel):
         ordering = ['TradeDate','Account','Agency']  # 按照哪个栏目排序
 #权益类状态
 class EquityPositionStatu(models.Model):
-    EquityReg=models.OneToOneField( EquityReg,blank =True,null =True,verbose_name='权益类登记')
+    EquityReg=models.OneToOneField( EquityReg,blank =True,null =True,verbose_name='权益类登记',related_name='EquityPositionStatu')
     EquityPositionSaved=models.BooleanField(default=False,blank =False, null=False,verbose_name='已更新至权益类持仓')
     
     class Meta:

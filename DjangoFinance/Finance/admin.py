@@ -73,13 +73,19 @@ class EquityPositionFilter(admin.SimpleListFilter):
             return queryset.filter(Quantity__lte=0)
         return queryset
 class EquityPosition_Admin(admin.ModelAdmin):
+    #重新保存
     def batch_update(self,request,queryset):
         for e in queryset:
             e.save()
     batch_update.short_description="重新保存"
+    #从权益类登记更新
+    def UpdateFromEquityReg(self,request,queryset):
+        for e in queryset:
+            e.UpdateFromEquityReg()
+    UpdateFromEquityReg.short_description="从权益类登记更新"
     readonly_fields = ('Amount',)
     list_display=('InvestType','Equity','Amount','AvgPrice','Quantity','UpdateDate','Comment')
-    actions = ['batch_update']
+    actions = ['batch_update','UpdateFromEquityReg',]
     list_filter = (EquityPositionFilter,)
 admin.site.register(EquityPosition,EquityPosition_Admin)
 
