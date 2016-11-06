@@ -362,9 +362,9 @@ class EquityPosition(FModel):
     Amount.short_description='市值'
     #从权益类登记更新
     def UpdateFromEquityReg(self):
-        n=self.EquityReg.filter(EquityPositionStatu__EquityPositionSaved=False).aggregate(count=Count('id'))
+        n=self.EquityReg.filter(EquityRegStatu__EquityPositionSaved=False).aggregate(count=Count('id'))
         if n['count']>0 :
-            es=self.EquityReg.filter(EquityPositionStatu__EquityPositionSaved=False,Quantity__lt=0).order_by('TradeDate')
+            es=self.EquityReg.filter(Quantity__lt=0).order_by('TradeDate')
             addup_a_q={}
             starttime=datetime.date(1900,1,1)
             for e in es:
@@ -383,8 +383,9 @@ class EquityPosition(FModel):
                 self.AvgPrice=0
             self.Quantity=addup_a_q["quantity"]
             self.save()
-            #self.EquityReg.filter(EquityPositionStatu__EquityPositionSaved=False).update(EquityPositionStatu__EquityPositionSaved=True)
-    
+            
+            #self.EquityReg.filter(EquityRegStatu__EquityPositionSaved=False).update(EquityRegStatu__EquityPositionSaved=True)
+            EquityRegStatu.objects.filter(EquityReg__EquityPosition=self).update(EquityPositionSaved=True)
     #按时间范围计算金额与数量
     def Count_Amount_Quantity(self,starttime,endtime):
         e=self.EquityReg.filter(TradeDate__gt=starttime).filter(TradeDate__lt=endtime)
@@ -412,7 +413,6 @@ class EquityReg(FModel):
     Amount=models.FloatField('成交金额' ,blank=True, null=True,default=0)
     TradeDate=models.DateField('成交日期',  editable=True, null=True)
     Comment= models.CharField('说明', max_length=100,blank=True, null=True)
-
     def Rate(self):
         try:
             if self.Quantity > 0:
@@ -426,10 +426,10 @@ class EquityReg(FModel):
         finally:
             return format(r,".2%")
     Rate.short_description='费率'
-    #保存时将EquityPositionStatu的状态设置为未保存
+    #保存时将EquityRegStatu的状态设置为未保存
     def save(self, *args, **kwargs):        
         super(FModel, self).save(*args, **kwargs)
-        eps=EquityPositionStatu.objects.get_or_create(EquityReg=self)
+        eps=EquityRegStatu.objects.get_or_create(EquityReg=self)
         eps[0].EquityPositionSaved=False
         eps[0].save()
     class Meta:
@@ -437,8 +437,8 @@ class EquityReg(FModel):
         verbose_name_plural = '权益类登记'
         ordering = ['TradeDate','Account','Agency']  # 按照哪个栏目排序
 #权益类状态
-class EquityPositionStatu(models.Model):
-    EquityReg=models.OneToOneField( EquityReg,blank =True,null =True,verbose_name='权益类登记',related_name='EquityPositionStatu')
+class EquityRegStatu(models.Model):
+    EquityReg=models.OneToOneField( EquityReg,blank =True,null =True,verbose_name='权益类登记',related_name='EquityRegStatu')
     EquityPositionSaved=models.BooleanField(default=False,blank =False, null=False,verbose_name='已更新至权益类持仓')
     
     class Meta:
