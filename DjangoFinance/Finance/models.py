@@ -359,7 +359,19 @@ class EquityPosition(FModel):
     Comment= models.CharField('说明', max_length=100,blank=True, null=True)
     def Amount(self):
         return self.AvgPrice * self.Quantity
-    Amount.short_description='市值'
+    Amount.short_description='成本价'
+    def CurrentPrice(self):
+        return self.Equity.Price
+    CurrentPrice.short_description='现价'
+    def MarketValue(self):
+        return self.CurrentPrice()*self.Quantity
+    MarketValue.short_description='市值'
+    def ReturnRate(self):
+        if self.Amount()>0:
+            return format((self.MarketValue()-self.Amount())/self.Amount(),".2%")
+        else:
+            return ""
+    ReturnRate.short_description='收益率'
     #从权益类登记更新
     def UpdateFromEquityReg(self):
         n=self.EquityReg.filter(EquityRegStatu__EquityPositionSaved=False).aggregate(count=Count('id'))
