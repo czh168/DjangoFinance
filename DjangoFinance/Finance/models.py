@@ -3,7 +3,7 @@ from django.db import models
 from django.db.models.fields import *
 from django.core.urlresolvers import reverse
 from django.apps import apps
-from django.db.models import Avg, Max, Min, Count
+from django.db.models import Avg, Max, Min, Count,Sum
 
 import datetime
 import urllib.request
@@ -20,6 +20,14 @@ def err_proc(errstr,err):
     logger = logging.getLogger('Finance')
     logger.error(errstr)
     raise Exception(errstr)
+#字典累计将newd累计到d
+def dictAddUp(d,newd):
+    if d=={}:
+        return newd.copy()
+    else:
+        for k in newd.keys():
+            d[k]+=newd[k]
+        return d
 #*******************************************************************************************************************
 #************                                         base类                                            ************
 #*******************************************************************************************************************
@@ -356,10 +364,37 @@ class EquityPosition(FModel):
     def UpdateFromEquityReg(self):
         n=self.EquityReg.filter(EquityPositionStatu__EquityPositionSaved=False).aggregate(count=Count('id'))
         if n['count']>0 :
-            f
-        else:
-            return
-        raise Exception("%s"%n['count'])
+            es=self.EquityReg.filter(EquityPositionStatu__EquityPositionSaved=False,Quantity__lt=0).order_by('TradeDate')
+            addup_a_q={}
+            starttime=datetime.date(1900,1,1)
+            for e in es:
+                endtime=e.TradeDate
+                a_q=self.Count_Amount_Quantity(starttime,endtime)
+                addup_a_q=dictAddUp(addup_a_q,a_q)
+                av=addup_a_q["amount"]/addup_a_q["quantity"]
+                addup_a_q=dictAddUp(addup_a_q,{"amount":e.Quantity*av,"quantity":e.Quantity})
+                starttime=endtime
+            endtime=datetime.date.today()
+            a_q=self.Count_Amount_Quantity(starttime,endtime)
+            addup_a_q=dictAddUp(addup_a_q,a_q)
+            if addup_a_q["quantity"]>0:
+                self.AvgPrice=addup_a_q["amount"]/addup_a_q["quantity"]
+            else:
+                self.AvgPrice=0
+            self.Quantity=addup_a_q["quantity"]
+            self.save()
+            #self.EquityReg.filter(EquityPositionStatu__EquityPositionSaved=False).update(EquityPositionStatu__EquityPositionSaved=True)
+    
+    #按时间范围计算金额与数量
+    def Count_Amount_Quantity(self,starttime,endtime):
+        e=self.EquityReg.filter(TradeDate__gt=starttime).filter(TradeDate__lt=endtime)
+        a_q=self.EquityReg.filter(TradeDate__gt=starttime).filter(TradeDate__lt=endtime).aggregate(amount=Sum('Amount'),quantity=Sum('Quantity'))
+        if a_q['amount']==None:
+            a_q['amount']=0
+        if a_q['quantity']==None:
+            a_q['quantity']=0
+        return  a_q
+    
     def __str__(self):
         return '%s'%self.InvestType+'/'+self.Equity.Code+self.Equity.Name
     class Meta:
