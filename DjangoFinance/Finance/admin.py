@@ -83,16 +83,23 @@ class EquityPosition_Admin(admin.ModelAdmin):
         for e in queryset:
             e.UpdateFromEquityReg()
     UpdateFromEquityReg.short_description="从权益类登记更新"
-    readonly_fields = ('Amount','CurrentPrice','MarketValue','ReturnRate')
-    list_display=('InvestType','Equity','Amount','AvgPrice','Quantity','CurrentPrice','MarketValue','ReturnRate','Comment')
+    readonly_fields = ('Cost','CurrentPrice','MarketValue','AllGain','ReturnRate')
+    list_display=('InvestType','Equity','Cost','AvgPrice','Quantity','CurrentPrice','MarketValue','ReturnRate','AllGain','Comment')
     actions = ['batch_update','UpdateFromEquityReg',]
     list_filter = (EquityPositionFilter,)
 admin.site.register(EquityPosition,EquityPosition_Admin)
 
 class EquityReg_Admin(admin.ModelAdmin):
+    def batch_update(self,request,queryset):
+        for e in queryset:
+            e.save()
+    batch_update.short_description="重新保存"
     readonly_fields = ('Rate',)
     list_display=('Agency','Account','EquityPosition','Amount','Rate','Price','Quantity','TradeDate','Comment')
+    actions = ['batch_update',]
     #list_editable = ('Amount', )
 admin.site.register(EquityReg,EquityReg_Admin)
 
-
+class EquityRegStatu_Admin(admin.ModelAdmin):
+    list_display=('EquityReg','EquityPositionSaved')
+admin.site.register(EquityRegStatu,EquityRegStatu_Admin)

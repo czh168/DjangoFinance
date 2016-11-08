@@ -4,7 +4,8 @@ from django.db.models.fields import *
 from django.core.urlresolvers import reverse
 from django.apps import apps
 from django.db.models import Avg, Max, Min, Count,Sum
-
+from django.db.models import F
+from django.db.models import Q
 import datetime
 import urllib.request
 import csv
@@ -28,6 +29,12 @@ def dictAddUp(d,newd):
         for k in newd.keys():
             d[k]+=newd[k]
         return d
+#将空值重置为0
+def reset_null_to_zero(value):
+    if value ==None:
+        return 0
+    else:
+        return value
 #*******************************************************************************************************************
 #************                                         base类                                            ************
 #*******************************************************************************************************************
@@ -357,9 +364,8 @@ class EquityPosition(FModel):
     Quantity=models.FloatField('持仓数量' ,blank=True, null=True,default=0)
     UpdateDate=models.DateField('更新日期',  editable=True, null=True,default=datetime.date(1900,1,1))
     Comment= models.CharField('说明', max_length=100,blank=True, null=True)
-    def Amount(self):
-        return self.AvgPrice * self.Quantity
-    Amount.short_description='成本价'
+    Cost=models.FloatField('成本' ,blank=True, null=True,default=0)
+
     def CurrentPrice(self):
         return self.Equity.Price
     CurrentPrice.short_description='现价'
@@ -367,11 +373,16 @@ class EquityPosition(FModel):
         return self.CurrentPrice()*self.Quantity
     MarketValue.short_description='市值'
     def ReturnRate(self):
-        if self.Amount()>0:
-            return format((self.MarketValue()-self.Amount())/self.Amount(),".2%")
+        if self.Cost>0:
+            return format((self.MarketValue()-self.Cost)/self.Cost,".2%")
         else:
             return ""
-    ReturnRate.short_description='收益率'
+    ReturnRate.short_description='当前收益率'
+    def AllGain(self):
+        d=self.EquityReg.aggregate(amount=Sum(F('Quantity')*F('Price')))
+        amount=reset_null_to_zero(d['amount'])
+        return self.MarketValue()-amount
+    AllGain.short_description='累计收益'
     #从权益类登记更新
     def UpdateFromEquityReg(self):
         n=self.EquityReg.filter(EquityRegStatu__EquityPositionSaved=False).aggregate(count=Count('id'))
@@ -394,6 +405,7 @@ class EquityPosition(FModel):
             else:
                 self.AvgPrice=0
             self.Quantity=addup_a_q["quantity"]
+            self.Cost=self.Quantity*self.AvgPrice
             self.save()
             
             #self.EquityReg.filter(EquityRegStatu__EquityPositionSaved=False).update(EquityRegStatu__EquityPositionSaved=True)
