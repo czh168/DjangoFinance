@@ -35,17 +35,29 @@ def reset_null_to_zero(value):
         return 0
     else:
         return value
+#指定字段设置小数限制
+
 #*******************************************************************************************************************
 #************                                         base类                                            ************
 #*******************************************************************************************************************
 #模型基类
 class FModel(models.Model):
     KeyName= models.CharField('主键名称', max_length=50,blank=True, null=True)
+    DecimalRounds={}
+    #自动按设置进行小数四舍五入
+    def _field_decimal_round(self):
+        drs=self.DecimalRounds
+        for key in drs:
+            value=getattr(self,key)
+            value=round(value,drs[key])
+            setattr(self,key,value)
     def save(self, *args, **kwargs):        
         self.KeyName='%s'%self
+        self._field_decimal_round()
         super(FModel, self).save(*args, **kwargs)
     class Meta:
         abstract = True
+        
 #机构类型
 class AgencyType(FModel):
     Name= models.CharField('类型名称', max_length=30,blank=True, null=True)
@@ -365,6 +377,7 @@ class EquityPosition(FModel):
     UpdateDate=models.DateField('更新日期',  editable=True, null=True,default=datetime.date(1900,1,1))
     Comment= models.CharField('说明', max_length=100,blank=True, null=True)
     Cost=models.FloatField('成本' ,blank=True, null=True,default=0)
+    DecimalRounds={'AvgPrice':4,'Quantity':4,'Cost':4,'CurrentPrice':4,'MarketValue':4,'ReturnRate':4,'AllGain':4,}
     CurrentPrice=models.FloatField('现价' ,blank=True, null=True,default=0)
     def _CurrentPrice(self):
         return self.Equity.Price
@@ -432,6 +445,7 @@ class EquityPosition(FModel):
         verbose_name = '权益类持仓'
         verbose_name_plural = '权益类持仓'
         ordering = ['InvestType','Equity',]  # 按照哪个栏目排序
+        
 #权益类登记
 class EquityReg(FModel):
     Agency=models.ForeignKey(Agency,blank=True, null=True,verbose_name='机构')
@@ -456,9 +470,10 @@ class EquityReg(FModel):
         finally:
             return format(r,".2%")
     Rate.short_description='费率'
+    DecimalRounds={'Price':4,'Quantity':4,'Amount':4,}
     #保存时将EquityRegStatu的状态设置为未保存
-    def save(self, *args, **kwargs):        
-        super(FModel, self).save(*args, **kwargs)
+    def save(self, *args, **kwargs):      
+        super(EquityReg, self).save(*args, **kwargs)
         eps=EquityRegStatu.objects.get_or_create(EquityReg=self)
         eps[0].EquityPositionSaved=False
         eps[0].save()
@@ -470,7 +485,14 @@ class EquityReg(FModel):
 class EquityRegStatu(models.Model):
     EquityReg=models.OneToOneField( EquityReg,blank =True,null =True,verbose_name='权益类登记',related_name='EquityRegStatu')
     EquityPositionSaved=models.BooleanField(default=False,blank =False, null=False,verbose_name='已更新至权益类持仓')
-    
+    CashFlowSaved=models.BooleanField(default=False,blank =False, null=False,verbose_name='已更新至权益类现金流')
     class Meta:
         verbose_name="权益类登记状态"
         verbose_name_plural="权益类登记状态"
+#权益类现金流
+class EquityCashFlow(CashFlow):
+    RelateEquityReg=models.ForeignKey(EquityReg,verbose_name='相关权益类登记')
+    class Meta:
+        verbose_name = '权益类现金流'
+        verbose_name_plural = '权益类现金流'
+        ordering = ['HappendDate']  # 按照哪个栏目排序    
