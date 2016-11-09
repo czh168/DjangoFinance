@@ -182,7 +182,7 @@ SUIT_CONFIG = {
      ),
 
     # misc
-    'LIST_PER_PAGE': 100
+    'LIST_PER_PAGE': 25
 }
 
 LOGGING = {
