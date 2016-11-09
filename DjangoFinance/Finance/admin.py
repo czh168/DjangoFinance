@@ -106,5 +106,9 @@ class EquityReg_Admin(admin.ModelAdmin):
 admin.site.register(EquityReg,EquityReg_Admin)
 
 class EquityRegStatu_Admin(admin.ModelAdmin):
-    list_display=('EquityReg','EquityPositionSaved')
+    list_display=('EquityReg','EquityPositionSaved','CashFlowSaved')
 admin.site.register(EquityRegStatu,EquityRegStatu_Admin)
+
+class EquityCashFlow_Admin(admin.ModelAdmin):
+    list_display=('HappendDate','Amount','RelateEquityReg')
+admin.site.register(EquityCashFlow,EquityCashFlow_Admin)
