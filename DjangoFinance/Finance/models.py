@@ -204,7 +204,7 @@ class CashFlow(FModel):
         abstract = True
         
 #*******************************************************************************************************************
-#权益类信息
+#权益类行情
 class Equity(FModel):
     Name= models.CharField('股票名称', max_length=50,blank=True, null=True)
     Code=models.CharField('股票代码', max_length=20,blank=True, null=True)
@@ -225,8 +225,8 @@ class Equity(FModel):
     def __str__(self):
         return self.Code+ self.Name
     class Meta:
-        verbose_name = '权益类信息'
-        verbose_name_plural = '权益类信息'
+        verbose_name = '权益类行情'
+        verbose_name_plural = '权益类行情'
         ordering = ['Type','Code']  # 按照哪个栏目排序
 #**********************************************************************************************************************
 #数据导入
@@ -365,24 +365,24 @@ class EquityPosition(FModel):
     UpdateDate=models.DateField('更新日期',  editable=True, null=True,default=datetime.date(1900,1,1))
     Comment= models.CharField('说明', max_length=100,blank=True, null=True)
     Cost=models.FloatField('成本' ,blank=True, null=True,default=0)
-
-    def CurrentPrice(self):
+    CurrentPrice=models.FloatField('现价' ,blank=True, null=True,default=0)
+    def _CurrentPrice(self):
         return self.Equity.Price
-    CurrentPrice.short_description='现价'
-    def MarketValue(self):
-        return self.CurrentPrice()*self.Quantity
-    MarketValue.short_description='市值'
-    def ReturnRate(self):
+    MarketValue=models.FloatField('市值' ,blank=True, null=True,default=0)
+    def _MarketValue(self):
+        return self.CurrentPrice*self.Quantity
+    ReturnRate=models.FloatField('当前收益率' ,blank=True, null=True,default=0)
+    def _ReturnRate(self):
         if self.Cost>0:
-            return format((self.MarketValue()-self.Cost)/self.Cost,".2%")
+            return (self.MarketValue-self.Cost)/self.Cost
         else:
-            return ""
-    ReturnRate.short_description='当前收益率'
-    def AllGain(self):
+            return 0
+    AllGain=models.FloatField('累计收益' ,blank=True, null=True,default=0)
+    def _AllGain(self):
         d=self.EquityReg.aggregate(amount=Sum(F('Quantity')*F('Price')))
         amount=reset_null_to_zero(d['amount'])
-        return self.MarketValue()-amount
-    AllGain.short_description='累计收益'
+        return self.MarketValue-amount
+
     #从权益类登记更新
     def UpdateFromEquityReg(self):
         n=self.EquityReg.filter(EquityRegStatu__EquityPositionSaved=False).aggregate(count=Count('id'))
@@ -419,7 +419,13 @@ class EquityPosition(FModel):
         if a_q['quantity']==None:
             a_q['quantity']=0
         return  a_q
-    
+    #根据行情更新
+    def UpdateFromEquity(self):
+        self.CurrentPrice=self._CurrentPrice()
+        self.MarketValue=self._MarketValue()
+        self.ReturnRate=self._ReturnRate()
+        self.AllGain=self._AllGain()
+        self.save()
     def __str__(self):
         return '%s'%self.InvestType+'/'+self.Equity.Code+self.Equity.Name
     class Meta:

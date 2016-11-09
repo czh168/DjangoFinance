@@ -83,9 +83,14 @@ class EquityPosition_Admin(admin.ModelAdmin):
         for e in queryset:
             e.UpdateFromEquityReg()
     UpdateFromEquityReg.short_description="从权益类登记更新"
+    #从权益类行情中更新
+    def UpdateFromEquity(self,request,queryset):
+        for e in queryset:
+            e.UpdateFromEquity()
+    UpdateFromEquity.short_description="从权益类行情更新"
     readonly_fields = ('Cost','CurrentPrice','MarketValue','AllGain','ReturnRate')
     list_display=('InvestType','Equity','Cost','AvgPrice','Quantity','CurrentPrice','MarketValue','ReturnRate','AllGain','Comment')
-    actions = ['batch_update','UpdateFromEquityReg',]
+    actions = ['batch_update','UpdateFromEquityReg','UpdateFromEquity',]
     list_filter = (EquityPositionFilter,)
 admin.site.register(EquityPosition,EquityPosition_Admin)
 
