@@ -374,10 +374,9 @@ class EquityPosition(FModel):
     #Amount=models.FloatField('市值' ,blank=True, null=True,default=0)
     AvgPrice=models.FloatField('均价' ,blank=True, null=True,default=0)
     Quantity=models.FloatField('持仓数量' ,blank=True, null=True,default=0)
-    UpdateDate=models.DateField('更新日期',  editable=True, null=True,default=datetime.date(1900,1,1))
+    #UpdateDate=models.DateField('更新日期',  editable=True, null=True,default=datetime.date(1900,1,1))
     Comment= models.CharField('说明', max_length=100,blank=True, null=True)
     Cost=models.FloatField('成本' ,blank=True, null=True,default=0)
-    DecimalRounds={'AvgPrice':4,'Quantity':4,'Cost':4,'CurrentPrice':4,'MarketValue':4,'ReturnRate':4,'AllGain':4,}
     CurrentPrice=models.FloatField('现价' ,blank=True, null=True,default=0)
     def _CurrentPrice(self):
         return self.Equity.Price
@@ -395,7 +394,7 @@ class EquityPosition(FModel):
         d=self.EquityReg.aggregate(amount=Sum(F('Quantity')*F('Price')))
         amount=reset_null_to_zero(d['amount'])
         return self.MarketValue-amount
-
+    DecimalRounds={'AvgPrice':4,'Quantity':4,'Cost':4,'CurrentPrice':4,'MarketValue':4,'ReturnRate':4,'AllGain':4,}
     #从权益类登记更新
     def UpdateFromEquityReg(self):
         n=self.EquityReg.filter(EquityRegStatu__EquityPositionSaved=False).aggregate(count=Count('id'))
@@ -439,6 +438,23 @@ class EquityPosition(FModel):
         self.ReturnRate=self._ReturnRate()
         self.AllGain=self._AllGain()
         self.save()
+    #生成现金流
+    def genCashFlow(self):
+        #清除源被修改过的现金流
+        self.EquityCashFlow.filter(RelateEquityReg__EquityRegStatu__CashFlowSaved=False).delete()
+        #清除还持仓的现金流
+        self.EquityCashFlow.filter(RelateEquityPosition=self).filter(RelateEquityReg=None).delete()
+        #添加源被修改过的现金流
+        for e in self.EquityReg.filter(EquityRegStatu__CashFlowSaved=False):
+            cf=EquityCashFlow(HappendDate=e.TradeDate,Amount=-abs(e.Quantity)/e.Quantity*e.Amount,RelateEquityReg=e,RelateEquityPosition=self)
+            cf.save()
+        #将源状态设置为已修改
+        EquityRegStatu.objects.filter(EquityReg__EquityPosition=self).update(CashFlowSaved=True)
+        #添加当前持仓为现金流
+        if self.Quantity>0:
+            cf=EquityCashFlow(HappendDate=datetime.date.today(),Amount=self.MarketValue,RelateEquityPosition=self)
+            cf.save()
+       
     def __str__(self):
         return '%s'%self.InvestType+'/'+self.Equity.Code+self.Equity.Name
     class Meta:
@@ -491,7 +507,8 @@ class EquityRegStatu(models.Model):
         verbose_name_plural="权益类登记状态"
 #权益类现金流
 class EquityCashFlow(CashFlow):
-    RelateEquityReg=models.ForeignKey(EquityReg,verbose_name='相关权益类登记')
+    RelateEquityPosition=models.ForeignKey(EquityPosition,verbose_name='相关权益类持仓',blank=True, null=True,related_name='EquityCashFlow')
+    RelateEquityReg=models.ForeignKey(EquityReg,verbose_name='相关权益类登记',blank=True, null=True,related_name='EquityCashFlow')
     class Meta:
         verbose_name = '权益类现金流'
         verbose_name_plural = '权益类现金流'

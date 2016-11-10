@@ -88,9 +88,14 @@ class EquityPosition_Admin(admin.ModelAdmin):
         for e in queryset:
             e.UpdateFromEquity()
     UpdateFromEquity.short_description="从权益类行情更新"
+    #生成现金流
+    def genCashFlow(self,request,queryset):
+        for e in queryset:
+            e.genCashFlow()
+    genCashFlow.short_description="生成现金流"
     readonly_fields = ('Cost','CurrentPrice','MarketValue','AllGain','ReturnRate')
     list_display=('InvestType','Equity','Cost','AvgPrice','Quantity','CurrentPrice','MarketValue','ReturnRate','AllGain','Comment')
-    actions = ['batch_update','UpdateFromEquityReg','UpdateFromEquity',]
+    actions = ['batch_update','UpdateFromEquityReg','UpdateFromEquity','genCashFlow']
     list_filter = (EquityPositionFilter,)
 admin.site.register(EquityPosition,EquityPosition_Admin)
 
@@ -99,9 +104,13 @@ class EquityReg_Admin(admin.ModelAdmin):
         for e in queryset:
             e.save()
     batch_update.short_description="重新保存"
+    def genCashFlow(self,request,queryset):
+        for e in queryset:
+            e.genCashFlow()
+    genCashFlow.short_description="生成现金流"        
     readonly_fields = ('Rate',)
     list_display=('Agency','Account','EquityPosition','Amount','Rate','Price','Quantity','TradeDate','Comment')
-    actions = ['batch_update',]
+    actions = ['batch_update','生成现金流']
     #list_editable = ('Amount', )
 admin.site.register(EquityReg,EquityReg_Admin)
 
@@ -110,5 +119,5 @@ class EquityRegStatu_Admin(admin.ModelAdmin):
 admin.site.register(EquityRegStatu,EquityRegStatu_Admin)
 
 class EquityCashFlow_Admin(admin.ModelAdmin):
-    list_display=('HappendDate','Amount','RelateEquityReg')
+    list_display=('HappendDate','Amount','RelateEquityReg','RelateEquityPosition')
 admin.site.register(EquityCashFlow,EquityCashFlow_Admin)
