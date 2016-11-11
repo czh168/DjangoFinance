@@ -54,6 +54,10 @@ class FixedIcome_Admin(admin.ModelAdmin):
     genCashFlowA.short_description="生成现金流"
 admin.site.register(FixedIncome,FixedIcome_Admin)
 
+class FixedIncomeStatu_Admin(admin.ModelAdmin):
+    list_display=('FixedIncome','CashFlowSaved')
+admin.site.register(FixedIncomeStatu,FixedIncomeStatu_Admin)
+
 class FixedIncomeCashFlow_Admin(admin.ModelAdmin):
     list_display=('HappendDate','Amount','RelateFixedIncome')
 admin.site.register(FixedIncomeCashFlow,FixedIncomeCashFlow_Admin)

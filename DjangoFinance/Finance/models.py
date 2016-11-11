@@ -328,8 +328,8 @@ class BatchImport(FModel):
 #******************************************************************************************************************
 #*************                                      main                                           ****************
 #******************************************************************************************************************
-
 #*****************************************   固定收益类  **********************************************************
+#******************************************************************************************************************
 #固定收益类
 class  FixedIncome(FModel):
     Name= models.CharField('名称', max_length=256,blank=True, null=True)
@@ -344,23 +344,48 @@ class  FixedIncome(FModel):
     Discount=models.FloatField('优惠' ,blank=True, null=True,default=0)
     Comment= models.CharField('说明', max_length=100,blank=True, null=True)
     Completed=models.BooleanField("已完成",default=False)
+    #@property
+    #def FixedIncomeStatu(self):
+    #    return FixedIncomeStatu.objects.filter(FixedIncome=self)[0]
     #生成现金流
     def genCashFlow(self):
-        it=self.intrestype
-        ficf=FixedIncomeCashFlow.objects.filter(relatefixedincome=self)
-        ficf.delete()
+        #如果本记录未做修改，退出不生成
+        if self.FixedIncomeStatu.CashFlowSaved :
+            return
+        it=self.IntresType
+        #删除本记录对应的现金流
+        #ficf=FixedIncomeCashFlow.objects.filter(relatefixedincome=self)
+        ficf=self.FixedIncomeCashFlow
+        ficf.all().delete()
+        #根据本记录生成现金流
         for i,j in it.genCashFlow(self.Spend,self.AnnualizedYield,self.Buydate,self.Maturity,self.Discount):
-            cf=FixedIncomeCashFlow.objects.create(happenddate=i,amount=j,relatefixedincome=self)
-        
+            cf=FixedIncomeCashFlow.objects.create(HappendDate=i,Amount=j,RelateFixedIncome=self)
+        #本记录标记为已保存
+        self.FixedIncomeStatu.CashFlowSaved=True
+        self.FixedIncomeStatu.save()
+
+    #保存时将FixedIncomeStatu的状态设置为未保存
+    def save(self, *args, **kwargs):      
+        super(FixedIncome, self).save(*args, **kwargs)
+        eps=FixedIncomeStatu.objects.get_or_create(FixedIncome=self)
+        eps[0].CashFlowSaved=False
+        eps[0].save()        
     def __str__(self):
         return self.Buydate.strftime('%Y-%m-%d')+"/"+ self.Name
     class Meta:
         verbose_name = '固定收益类'
         verbose_name_plural = '固定收益类'
         ordering = ['Buydate','Account','Agency']  # 按照哪个栏目排序        
+#固定收益类状态
+class FixedIncomeStatu(models.Model):
+    FixedIncome=models.OneToOneField(FixedIncome,blank =True,null =True,verbose_name='固定收益类',related_name='FixedIncomeStatu')
+    CashFlowSaved=models.BooleanField(default=False,blank =False, null=False,verbose_name='已更新至固定收益类现金流')
+    class Meta:
+        verbose_name="固定收益类登记状态"
+        verbose_name_plural="固定收益类登记状态"
 #固定收益类现金流
 class FixedIncomeCashFlow(CashFlow):
-    RelateFixedIncome=models.ForeignKey(FixedIncome,verbose_name='相关固定收益类')
+    RelateFixedIncome=models.ForeignKey(FixedIncome,verbose_name='相关固定收益类',related_name='FixedIncomeCashFlow')
     class Meta:
         verbose_name = '固定收益类现金流'
         verbose_name_plural = '固定收益类现金流'
