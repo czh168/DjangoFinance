@@ -15,7 +15,7 @@ class Account_Admin(admin.ModelAdmin):
 admin.site.register(Account,Account_Admin)
 
 class InvestType_Admin(admin.ModelAdmin):
-    list_display=('Name','SubName','Risk','Liquidity','Comment')
+    list_display=('IncomeType','Name','SubName','Risk','Liquidity','Comment')
 admin.site.register(InvestType,InvestType_Admin)
 
 class IntrestType_Admin(admin.ModelAdmin):
@@ -125,3 +125,7 @@ admin.site.register(EquityRegStatu,EquityRegStatu_Admin)
 class EquityCashFlow_Admin(admin.ModelAdmin):
     list_display=('HappendDate','Amount','RelateEquityReg','RelateEquityPosition')
 admin.site.register(EquityCashFlow,EquityCashFlow_Admin)
+
+admin.site.register(Report)
+admin.site.register(SubReport)
+admin.site.register(ReportItem)

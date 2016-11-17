@@ -92,6 +92,7 @@ class Account(FModel):
         ordering = ['Name']  # 按照哪个栏目排序
 #投资类别
 class InvestType(FModel):
+    IncomeType=models.CharField('收益类型', choices=(('1', "固定收益类"),('2', "权益类")),max_length=1,blank=True, null=True)
     Name= models.CharField('类名', max_length=30,blank=True, null=True)
     SubName= models.CharField('子类名', max_length=30,blank=True, null=True)
     Comment= models.CharField('说明', max_length=100,blank=True, null=True)
@@ -328,8 +329,8 @@ class BatchImport(FModel):
 #******************************************************************************************************************
 #*************                                      main                                           ****************
 #******************************************************************************************************************
+
 #*****************************************   固定收益类  **********************************************************
-#******************************************************************************************************************
 #固定收益类
 class  FixedIncome(FModel):
     Name= models.CharField('名称', max_length=256,blank=True, null=True)
@@ -538,3 +539,47 @@ class EquityCashFlow(CashFlow):
         verbose_name = '权益类现金流'
         verbose_name_plural = '权益类现金流'
         ordering = ['HappendDate']  # 按照哪个栏目排序    
+
+#********************************************************* 报表 ******************************************************************
+#报表
+class Report(FModel):
+    Name= models.CharField('名称', max_length=100,blank=True, null=True)
+    Comment= models.CharField('说明', max_length=100,blank=True, null=True)
+    genTime=models.DateTimeField('生成时间',  editable=True, null=True)
+    class Meta:
+        verbose_name = '主报表'
+        verbose_name_plural = '主报表'
+        ordering = ['genTime']  # 按照哪个栏目排序    
+class SubReport(FModel):
+    Report=models.ForeignKey(Report,blank=True, null=True,verbose_name='主报表',related_name='SubReport')
+    Name= models.CharField('名称', max_length=100,blank=True, null=True)
+    Comment= models.CharField('说明', max_length=100,blank=True, null=True)
+    class Meta:
+        verbose_name = '子报表'
+        verbose_name_plural = '子报表'
+        ordering = ['Name']  # 按照哪个栏目排序    
+class ReportItem(FModel):
+    SubReport=models.ForeignKey(SubReport,blank=True, null=True,verbose_name='子报表',related_name='ReportItem')
+    InvestType=models.ForeignKey(InvestType,blank=True, null=True,verbose_name='投资类型',related_name='ReportItem')
+    CurSpend=models.FloatField('当前投入' ,blank=True, null=True,default=0)
+    CurNetValue=models.FloatField('当前净值' ,blank=True, null=True,default=0)
+    CurReturn=models.FloatField('当前收益' ,blank=True, null=True,default=0)
+    CurReturnRate=models.FloatField('当前收益率' ,blank=True, null=True,default=0)
+    FinSpend=models.FloatField('已完成投入' ,blank=True, null=True,default=0)
+    FinReturn=models.FloatField('已完成收益' ,blank=True, null=True,default=0)
+    FinReturnRate=models.FloatField('当前收益率' ,blank=True, null=True,default=0)
+    AllSpend=models.FloatField('总投入' ,blank=True, null=True,default=0)
+    AllReturn=models.FloatField('总收益' ,blank=True, null=True,default=0)
+    AllReturnRate=models.FloatField('总收益率' ,blank=True, null=True,default=0)
+    AnnualRate=models.FloatField('年化率' ,blank=True, null=True,default=0)
+    RiskHigh=models.FloatField('高风险' ,blank=True, null=True,default=0)
+    RiskMiddle=models.FloatField('中风险' ,blank=True, null=True,default=0)
+    RiskLow=models.FloatField('低风险' ,blank=True, null=True,default=0)
+    LiquidityHigh=models.FloatField('高流动' ,blank=True, null=True,default=0)
+    LiquidityMiddel=models.FloatField('中流动' ,blank=True, null=True,default=0)
+    LiquidityLow=models.FloatField('低流动' ,blank=True, null=True,default=0)
+    class Meta:
+        verbose_name = '报表项'
+        verbose_name_plural = '报表项'
+        ordering = ['InvestType']  # 按照哪个栏目排序    
+     # 总年化率 风险 流动性
